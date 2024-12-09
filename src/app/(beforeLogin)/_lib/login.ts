@@ -3,8 +3,6 @@
 import { redirect } from 'next/navigation'
 import { PATH } from '@/utils/path'
 import { signIn } from '@/auth'
-import { Auth } from '@auth/core'
-import { AuthError, SignInError } from '@auth/core/errors'
 import { CredentialsSignin } from 'next-auth'
 
 export default async function onLogin(state: unknown, formData: FormData) {
@@ -15,11 +13,12 @@ export default async function onLogin(state: unknown, formData: FormData) {
   let isSucceed = false
 
   try {
-    await signIn('credentials', {
+    const response = await signIn('credentials', {
       username: id,
       password,
       redirect: false,
-    }).then(() => (isSucceed = true))
+    })
+    if (response) isSucceed = true
   } catch (error) {
     if (error instanceof CredentialsSignin) {
       console.error({
@@ -34,8 +33,5 @@ export default async function onLogin(state: unknown, formData: FormData) {
   }
   // isSucceed = true
   //
-  if (isSucceed) {
-    redirect(PATH.HOME)
-    return null
-  }
+  if (isSucceed) return redirect(PATH.HOME)
 }

@@ -1,12 +1,15 @@
 import UserMeta from '@/app/(afterLogin)/messages/_components/UserMeta'
-import { user } from '@/data'
-import Title from '@/app/_ui/Title'
 
-export default function SendMessagePage() {
+import Title from '@/app/_ui/Title'
+import { auth } from '@/auth'
+
+export default async function SendMessagePage() {
+  const session = await auth()
+  if (!session?.user) return null
   return (
     <section className={'border-grey_light border'}>
-      <Title title={user.id} />
-      <UserMeta user={user} />
+      <Title title={session.user.email ?? ''} />
+      <UserMeta user={session.user} />
       <article>채팅창</article>
     </section>
   )

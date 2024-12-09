@@ -4,7 +4,7 @@ import ProfileImage from '@/app/_ui/ProfileImage'
 import dayjs from 'dayjs'
 import ActionButtons from '@/app/(afterLogin)/_components/ActionButtons'
 import { usePathname, useRouter } from 'next/navigation'
-import { PostType } from '@/data'
+import { PostType } from '@/types'
 
 type CommentItemType = {
   post: PostType

@@ -1,7 +1,11 @@
 import React from 'react'
 import PhotoModal from '@/app/(afterLogin)/@modal/(.)[user]/status/[postId]/photo/[photoId]/_components/PhotoModal'
-import { post } from '@/data'
+import { PostPropsType } from '@/app/(afterLogin)/[user]/status/[postId]/page'
 
-export default function PhotoModalPage() {
-  return <PhotoModal post={post} />
+type PhotoModalPageProps = {
+  params: Promise<PostPropsType>
+}
+export default async function PhotoModalPage({ params }: PhotoModalPageProps) {
+  const { user, postId } = await params
+  return <PhotoModal postId={postId} user={user} />
 }

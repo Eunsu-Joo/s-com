@@ -24,7 +24,7 @@ const RightSearch = () => {
       <>
         <h4
           className={
-            'mt-3 rounded-[16px] border border-grey_hover px-4 py-3 text-[20px] font-bold'
+            'border-grey_hover mt-3 rounded-[16px] border px-4 py-3 text-[20px] font-bold'
           }
         >
           검색 필터
@@ -44,7 +44,7 @@ const RightSearch = () => {
             <label
               htmlFor={'all'}
               className={
-                'absolute right-0 top-1/2 h-[19.44px] w-[19.44px] -translate-y-1/2 rounded-full border border-gray-200 peer-checked:hidden'
+                'border-gray-200 absolute right-0 top-1/2 h-[19.44px] w-[19.44px] -translate-y-1/2 rounded-full border peer-checked:hidden'
               }
             />
             <label
@@ -69,7 +69,7 @@ const RightSearch = () => {
             <label
               htmlFor={'follow'}
               className={
-                'absolute right-0 top-1/2 h-[19.44px] w-[19.44px] -translate-y-1/2 rounded-full border border-gray-200 peer-checked:hidden'
+                'border-gray-200 absolute right-0 top-1/2 h-[19.44px] w-[19.44px] -translate-y-1/2 rounded-full border peer-checked:hidden'
               }
             />
             <label
@@ -86,7 +86,7 @@ const RightSearch = () => {
     )
   }
   return (
-    <div className={'fixed top-0 w-[inherit]'}>
+    <div className={'fixed top-0 z-10 w-[inherit]'}>
       <Searchbar />
     </div>
   )

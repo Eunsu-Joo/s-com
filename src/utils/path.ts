@@ -7,6 +7,7 @@ export const PATH = {
   MESSAGES: `/messages`,
   TWEET: `/compose/tweet`,
   SEARCH: `/search`,
+  MAIN: '/',
   // POST_DETAILS: (writer: string, postId: string) => `/${writer}/status/${postId}`,
   // IMAGE_DETAILS: (writer: string, postId: string,photoId:string) =>`/${writer}/status/${postId}/photo/${photoId}`,
   // PROFILE:(user:string)=>`/${user}`,

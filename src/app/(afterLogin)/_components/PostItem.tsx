@@ -7,16 +7,17 @@ import 'dayjs/locale/ko'
 import ProfileImage from '@/app/_ui/ProfileImage'
 import PostImages from '@/app/(afterLogin)/_components/PostImages'
 import Link from 'next/link'
-import { post, postList, PostType } from '@/data'
+import { PostType } from '@/types'
 
 dayjs.locale('ko')
 dayjs.extend(relativeTime)
 
 type PostItemProps = {
   post: PostType
+  noImage?: boolean
 }
 
-const PostItem = ({ post }: PostItemProps) => {
+const PostItem = ({ post, noImage }: PostItemProps) => {
   const router = useRouter()
   const onClickItem = () => {
     router.push(`/${post.user.id}/status/${post.postId}`, {
@@ -57,7 +58,7 @@ const PostItem = ({ post }: PostItemProps) => {
           </span>
         </div>
         <div className={'mb-3 mt-1 leading-5'}>{post.contents}</div>
-        <PostImages post={post} />
+        {!noImage && <PostImages post={post} />}
         <div className={'mt-3'}>
           <ActionButtons post={post} />
         </div>

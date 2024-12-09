@@ -1,9 +1,10 @@
 import Searchbar from '@/app/(afterLogin)/_components/Searchbar'
-import Title from '@/app/_ui/Title'
-import { postList } from '@/data'
-import PostItem from '@/app/(afterLogin)/_components/PostItem'
+import { auth } from '@/auth'
+import ExploreSection from '@/app/(afterLogin)/explore/_components/ExploreSection'
+import React from 'react'
 
-export default function ExplorePage() {
+export default async function ExplorePage() {
+  const session = await auth()
   return (
     <section className={'border'}>
       <div
@@ -14,10 +15,7 @@ export default function ExplorePage() {
         <Searchbar />
       </div>
       <article className={'mt-[60px] border-t'}>
-        <Title title={'나를 위한 트렌드'} backButton={false} />
-        {postList.map((post, index) => (
-          <PostItem post={post} key={index} />
-        ))}
+        <ExploreSection session={session} />
       </article>
     </section>
   )

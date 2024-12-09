@@ -15,12 +15,12 @@ const UserMeta = ({ user }: UserProps) => {
     <Link
       href={`/${username}`}
       className={
-        'hover:bg-gray_glow flex flex-col items-center px-4 pb-12 pt-5 transition-all'
+        'flex flex-col items-center px-4 pb-12 pt-5 transition-all hover:bg-gray_glow'
       }
     >
       <ProfileImage src={user.image} alt={user.id} width={64} />
       <h4 className={'text-[20px] font-bold'}>{user.name}</h4>
-      <p className={'text-[15px]'}>@{user.id}</p>
+      <p className={'text-[15px]'}>@{user.email}</p>
     </Link>
   )
 }

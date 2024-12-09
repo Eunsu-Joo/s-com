@@ -1,8 +1,7 @@
-'use server'
+'use sever'
 
 import { redirect } from 'next/navigation'
 import { PATH } from '@/utils/path'
-import { response } from 'express'
 import { signIn } from '@/auth'
 import { CredentialsSignin } from 'next-auth'
 

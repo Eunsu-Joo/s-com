@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
 import BackButton from '@/app/_ui/BackButton'
-import { user } from '@/data'
 
 type TitleType = {
   title: string

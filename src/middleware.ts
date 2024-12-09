@@ -13,12 +13,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/compose/tweet',
-    '/home',
-    '/explore',
-    '/messages',
-    '/search',
-    '/:path',
-  ],
+  matcher: ['/compose/tweet', '/explore', '/messages', '/search', '/login'],
 }

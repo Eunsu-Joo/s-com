@@ -5,14 +5,20 @@ import useImagePreviews from '@/hooks/useImagePreviews'
 import PreviewImageSlides from '@/app/(afterLogin)/_components/PreviewImageSlides'
 import ProfileImage from '@/app/_ui/ProfileImage'
 import { FileIcon } from '@/app/_ui/Icons'
-import { user } from '@/data'
+
 import clsx from 'clsx'
+import { useSession } from 'next-auth/react'
+import { SessionType } from '@/types'
 
 type PostFormProps = {
   smallSize?: boolean
   imageUpload?: boolean
-}
-const PostForm = ({ smallSize = false, imageUpload = true }: PostFormProps) => {
+} & SessionType
+const PostForm = ({
+  smallSize = false,
+  imageUpload = true,
+  session,
+}: PostFormProps) => {
   const imageRef = useRef<HTMLInputElement | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { contents, onChange } = useTextarea(textareaRef)
@@ -20,12 +26,16 @@ const PostForm = ({ smallSize = false, imageUpload = true }: PostFormProps) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
   }
+  if (!session?.user) return null
   return (
     <form
       onSubmit={onSubmit}
       className={'border-b-grey_hover flex items-start border-b p-4'}
     >
-      <ProfileImage src={user.image} alt={user.id} />
+      <ProfileImage
+        src={session.user.image as string}
+        alt={session.user.email as string}
+      />
       <div className={'ml-3 flex-1'}>
         <textarea
           name='textarea'

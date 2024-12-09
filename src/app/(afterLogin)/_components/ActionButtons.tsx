@@ -8,7 +8,7 @@ import {
   LikeIcon,
   RetweetIcon,
 } from '@/app/_ui/Icons'
-import { PostType } from '@/data'
+import { PostType } from '@/types'
 import { useRouter } from 'next/navigation'
 import { PATH } from '@/utils/path'
 

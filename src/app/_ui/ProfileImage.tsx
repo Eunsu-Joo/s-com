@@ -1,8 +1,8 @@
 import Image from 'next/image'
 
 type ProfileImage = {
-  src: string
-  alt: string
+  src: string | null
+  alt?: string
   width?: number
 }
 const ProfileImage = ({ src, alt, width = 40 }: ProfileImage) => {
@@ -11,14 +11,18 @@ const ProfileImage = ({ src, alt, width = 40 }: ProfileImage) => {
       style={{ width: `${width}px`, height: `${width}px` }}
       className={`relative overflow-hidden rounded-full`}
     >
-      <Image
-        sizes={`${width}px`}
-        fill
-        priority
-        className={'object-cover'}
-        src={src}
-        alt={alt}
-      />
+      {src ? (
+        <Image
+          sizes={`${width}px`}
+          fill
+          priority
+          className={'object-cover'}
+          src={src}
+          alt={alt ?? ''}
+        />
+      ) : (
+        <div className={'h-full w-full bg-gray_glow'} />
+      )}
     </div>
   )
 }

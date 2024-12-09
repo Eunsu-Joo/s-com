@@ -14,15 +14,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         username: { label: 'username', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
+
       async authorize(credentials, request) {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,
           {
             method: 'POST',
-            // headers: {
-            //   'Content-Type': 'application/json',
-            //   // 'Content-Type': 'application/x-www-form-urlencoded',
-            // },
+            headers: {
+              'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
               id: credentials.username,
               password: credentials.password,
@@ -31,6 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             //이게 있어야 쿠키가 전달됨.
           }
         )
+
         if (!response.ok) {
           const AuthError = new CredentialsSignin()
           if (response.status === 400) AuthError.message = 'not_found'
@@ -40,6 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw AuthError
         }
         const result = await response.json()
+
         return {
           email: result.id,
           name: result.nickname,

@@ -1,19 +1,40 @@
 import Title from '@/app/_ui/Title'
-import PostItem from '@/app/(afterLogin)/_components/PostItem'
-import { post, postList } from '@/data'
-import PostForm from '@/app/(afterLogin)/_components/PostForm'
-import CommentItem from '@/app/(afterLogin)/_components/CommentItem'
+import getPost from '@/app/(afterLogin)/_lib/getPost'
+import getComments from '@/app/(afterLogin)/_lib/getComments'
+import PostDetail from '@/app/(afterLogin)/[user]/_components/PostDetail'
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query'
 
-export default function PostDetailPage() {
+export type PostPropsType = {
+  user: string
+  postId: string
+}
+
+type DetailPageProps = {
+  params: Promise<PostPropsType>
+}
+export default async function PostDetailPage({ params }: DetailPageProps) {
+  const { user, postId } = await params
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery({
+    queryKey: ['posts', postId],
+    queryFn: getPost,
+  })
+  await queryClient.prefetchQuery({
+    queryKey: ['comments', postId],
+    queryFn: getComments,
+  })
+  const dehydratedState = dehydrate(queryClient)
   return (
     <section className={'border-grey_light border-l border-r'}>
       <Title title={'우편'} />
       <article>
-        <PostItem post={post} />
-        <PostForm imageUpload={false} />
-        {postList.map((post, index) => (
-          <CommentItem post={post} key={index} />
-        ))}
+        <HydrationBoundary state={dehydratedState}>
+          <PostDetail user={user} postId={postId} />
+        </HydrationBoundary>
       </article>
     </section>
   )

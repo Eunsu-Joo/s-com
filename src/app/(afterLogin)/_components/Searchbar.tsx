@@ -1,5 +1,5 @@
 'use client'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PATH } from '@/utils/path'
 
@@ -13,6 +13,9 @@ const Searchbar = ({ defaultValue = '' }: SearchbarProps) => {
     e.preventDefault()
     router.push(`${PATH.SEARCH}?q=${search}`)
   }
+  useEffect(() => {
+    setSearch(defaultValue)
+  }, [defaultValue])
   return (
     <div className={'w-full'}>
       <form

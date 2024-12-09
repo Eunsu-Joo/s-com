@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { MouseEventHandler } from 'react'
-import { PostType } from '@/data'
+import { PostType } from '@/types'
 
 type PostImagesProps = {
   post: PostType
@@ -14,6 +14,7 @@ const PostImages = ({ post }: PostImagesProps) => {
   const preventClickEvent: MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.stopPropagation()
   }
+  if (post.images.length === 0) return null
   if (pathname.includes('photo') || post.images.length === 1) {
     return (
       <Link

@@ -4,18 +4,44 @@ import ActionButtons from '@/app/(afterLogin)/_components/ActionButtons'
 import PostItem from '@/app/(afterLogin)/_components/PostItem'
 import PostForm from '@/app/(afterLogin)/_components/PostForm'
 import React from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import PhotoModalSlides from '@/app/(afterLogin)/@modal/(.)[user]/status/[postId]/photo/[photoId]/_components/PhotoModalSlides'
-import { postList, PostType } from '@/data'
 import CommentItem from '@/app/(afterLogin)/_components/CommentItem'
+import { PostPropsType } from '@/app/(afterLogin)/[user]/status/[postId]/page'
+import getComments from '@/app/(afterLogin)/_lib/getComments'
+import { useQueries } from '@tanstack/react-query'
+import getPost from '@/app/(afterLogin)/_lib/getPost'
 
-type PhotoModalProps = {
-  post: PostType
-}
-
-const PhotoModal = ({ post }: PhotoModalProps) => {
+const PhotoModal = ({ user, postId }: PostPropsType) => {
   const router = useRouter()
+  const [postResult, commentsResult] = useQueries({
+    queries: [
+      {
+        queryKey: ['posts', postId],
+        queryFn: getPost,
+        staleTime: 60 * 1000, //fresh->stale로 가는 시간
+        gcTime: 300 * 1000,
+      },
+      {
+        queryKey: ['comments', postId],
+        queryFn: getComments,
+        staleTime: 60 * 1000, //fresh->stale로 가는 시간
+        gcTime: 300 * 1000,
+      },
+    ],
+  })
+  if (postResult.isLoading || commentsResult.isLoading) {
+    return <div>Loading...</div>
+  }
+  if (postResult.error || commentsResult.error) {
+    return <div>애러발생</div>
+  }
+  if (!postResult.data || !commentsResult.data) {
+    return <div>데이터 없음</div>
+  }
   const closeModal = () => router.back()
+  const post = postResult.data
+
   return (
     <div
       className='fixed inset-0 z-20 flex h-full w-screen flex-row bg-black bg-opacity-95 transition-opacity'
@@ -42,16 +68,16 @@ const PhotoModal = ({ post }: PhotoModalProps) => {
       </section>
       <div
         className={
-          'border-l-grey_light overflow-auth w-[350px] border-l bg-background'
+          'border-l-grey_light w-[350px] overflow-y-auto border-l bg-background'
         }
       >
-        <PostItem post={post} />
+        <PostItem post={post} noImage={true} />
 
         <p className={'pl-6 pt-1 font-sans'}>
           Replying to <span className={'text-primary'}>@{post.user.id}</span>
         </p>
         <PostForm smallSize />
-        {postList.map((post, index) => (
+        {commentsResult.data.map((post, index) => (
           <CommentItem post={post} key={index} />
         ))}
       </div>
