@@ -6,6 +6,7 @@ import FollowingPostList from '@/app/(afterLogin)/home/_components/FollowingPost
 
 const PostList = () => {
   const { tab } = useContext(TabProvider)
-  return tab === 'recommend' ? <RecommendPostList /> : <FollowingPostList />
+  return <FollowingPostList />
+  // return tab === 'recommend' ? <RecommendPostList /> : <FollowingPostList />
 }
 export default PostList

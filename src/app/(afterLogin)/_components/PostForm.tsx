@@ -7,8 +7,8 @@ import ProfileImage from '@/app/_ui/ProfileImage'
 import { FileIcon } from '@/app/_ui/Icons'
 
 import clsx from 'clsx'
-import { useSession } from 'next-auth/react'
-import { SessionType } from '@/types'
+import { PostType, SessionType } from '@/types'
+import { InfiniteData, useQueryClient } from '@tanstack/react-query'
 
 type PostFormProps = {
   smallSize?: boolean
@@ -21,10 +21,46 @@ const PostForm = ({
 }: PostFormProps) => {
   const imageRef = useRef<HTMLInputElement | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-  const { contents, onChange } = useTextarea(textareaRef)
-  const { onChangeFiles, ondDeleteImages, previewImages } = useImagePreviews()
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const { contents, onChange, setContents } = useTextarea(textareaRef)
+  const { onChangeFiles, ondDeleteImages, previewImages, setPreviewImages } =
+    useImagePreviews()
+  const queryClient = useQueryClient()
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const formData = new FormData()
+    formData.append('content', contents)
+    previewImages.forEach((item) => {
+      item && formData.append('images', item.file)
+    })
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`,
+        {
+          cache: 'no-cache',
+          credentials: 'include',
+          method: 'POST',
+          body: formData,
+        }
+      )
+      if (response.status === 201) {
+        setContents('')
+        setPreviewImages([])
+        const newPost = await response.json()
+        //   쿼리에 새로운 데이터 추가하는 작업.
+        queryClient.setQueryData(
+          ['posts', 'recommends'],
+          (prevData: InfiniteData<PostType[]>) => {
+            const shallow = {
+              ...prevData,
+              pages: [...prevData.pages],
+            }
+            shallow.pages[0] = [...shallow.pages[0]]
+            shallow.pages[0].unshift(newPost)
+            return shallow
+          }
+        )
+      }
+    } catch (error: any) {}
   }
   if (!session?.user) return null
   return (

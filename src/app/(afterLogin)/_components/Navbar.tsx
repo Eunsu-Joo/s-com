@@ -22,7 +22,6 @@ const Navbar = ({ session }: SessionType) => {
     await signOut({ redirect: false })
     return router.push('/')
   }
-
   return (
     <>
       <div className='my-4 flex-1'>

@@ -2,7 +2,7 @@
 import ModalContainer from '@/app/_components/ModalContainer'
 import Image from 'next/image'
 import PostForm from '@/app/(afterLogin)/_components/PostForm'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import logo from '../../../../../../../public/logo.png'
 import PreviewImageSlides from '@/app/(afterLogin)/_components/PreviewImageSlides'
 import useTextarea from '@/hooks/useTextarea'
@@ -19,6 +19,10 @@ const ComposeTweetModal = () => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { contents, onChange } = useTextarea(textareaRef)
   const { onChangeFiles, ondDeleteImages, previewImages } = useImagePreviews()
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log(contents, imageRef.current)
+  }
   return (
     <ModalContainer>
       {/*/!*댓글일 때 *!/*/}
@@ -51,7 +55,7 @@ const ComposeTweetModal = () => {
       {/*</div>*/}
       {/*/!*댓글 달 때*!/*/}
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={onSubmit}
         className={'relative mt-2 flex min-h-[inherit] items-start p-4'}
       >
         <div className={'mr-3 flex items-center'}>

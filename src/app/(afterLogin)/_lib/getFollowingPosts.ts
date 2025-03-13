@@ -5,11 +5,13 @@ type Props = {
 }
 export default async function ({ pageParam }: Props) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/postsFollowing?cursor=${pageParam}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/followings?cursor=${pageParam}`,
     {
       next: {
         tags: ['posts', 'following'],
       },
+      credentials: 'include',
+      cache: 'no-store',
     }
   )
   if (!res.ok) {

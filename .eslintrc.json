@@ -4,7 +4,8 @@
     "next/typescript"
   ],
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "off",
+    "no-unused-expressions": "off"
   },
   "plugins": [
     "@typescript-eslint/eslint-plugin"

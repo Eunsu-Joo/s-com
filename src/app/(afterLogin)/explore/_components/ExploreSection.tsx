@@ -19,9 +19,9 @@ const ExploreSection = ({ session }: SessionType) => {
   if (isError) {
     return <div>애러발생</div>
   }
-  if (isLoading) {
-    return <PageLoading />
-  }
+  // if (isLoading) {
+  //   return <PageLoading />
+  // }
   return (
     <>
       <h3 className={'c-title'}>나를 위한 트렌드</h3>

@@ -33,15 +33,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         )
 
         if (!response.ok) {
+          // 로그인 애러났을 때 서버에 알려주는 코드.
+
           const AuthError = new CredentialsSignin()
-          if (response.status === 400) AuthError.message = 'not_found'
-          if (response.status === 401) AuthError.message = 'wrong_userInfo'
-          if (response.status === 404) AuthError.message = 'no_user'
           AuthError.code = response.status.toString()
           throw AuthError
         }
+        // 성공했을 때 유저정보 담음.
         const result = await response.json()
-
         return {
           email: result.id,
           name: result.nickname,

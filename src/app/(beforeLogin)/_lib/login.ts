@@ -8,8 +8,16 @@ import { CredentialsSignin } from 'next-auth'
 export default async function onLogin(state: unknown, formData: FormData) {
   const id = formData.get('id') as string,
     password = formData.get('password') as string
-  if (!id) return { fieldData: { id, password }, message: 'no_id' }
-  if (!password) return { fieldData: { id, password }, message: 'no_password' }
+  let message = ''
+  if (!id) {
+    message = '아이디를 입력해주세요.'
+    return { fieldData: null, message }
+  }
+  if (!password) {
+    message = '패스워드를 입력해주세요.'
+    return { fieldData: { id }, message }
+  }
+
   let isSucceed = false
 
   try {
@@ -19,19 +27,20 @@ export default async function onLogin(state: unknown, formData: FormData) {
       redirect: false,
     })
     if (response) isSucceed = true
-  } catch (error) {
+  } catch (error: any) {
+    // 로그인 실패했을 때 (401,404) catch문으로 받음.
     if (error instanceof CredentialsSignin) {
-      console.error({
-        status: error.code,
-        message: error.message,
-      })
+      if (+error.code === 401) {
+        message = '비밀번호가 일치하지 않습니다.'
+      }
+      if (+error.code === 404) {
+        message = '존재하지 않는 유저입니다.'
+      }
       return {
         fieldData: { id, password },
-        message: error.message,
+        message,
       }
     }
   }
-  // isSucceed = true
-  //
   if (isSucceed) return redirect(PATH.HOME)
 }

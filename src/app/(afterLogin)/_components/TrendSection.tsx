@@ -18,13 +18,20 @@ const TrendSection = ({ session }: SessionType) => {
   })
   if (pathname === PATH.EXPLORE) return null
   if (isError) {
-    return <div>애러발생</div>
+    return (
+      <div
+        style={{ marginTop: pathname === PATH.SEARCH ? '4px' : '60px' }}
+        className={`rounded-2xl bg-gray_light p-4`}
+      >
+        <div>애러발생</div>
+      </div>
+    )
   }
   if (isLoading) {
     return (
       <div
         style={{ marginTop: pathname === PATH.SEARCH ? '4px' : '60px' }}
-        className={`rounded-2xl bg-gray_light py-3`}
+        className={`rounded-2xl bg-gray_light p-4`}
       >
         <Spinner />
       </div>

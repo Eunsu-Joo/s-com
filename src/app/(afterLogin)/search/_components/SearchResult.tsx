@@ -6,29 +6,23 @@ import { ParamsType } from '@/app/(afterLogin)/search/page'
 import PostItem from '@/app/(afterLogin)/_components/PostItem'
 import { PostType } from '@/types'
 import Spinner from '@/app/_components/Spinner'
+import Error from '@/app/_components/Error'
 
 const SearchResult = ({ searchParams }: { searchParams: ParamsType }) => {
   const { data, isError, error, isLoading } = useQuery({
-    queryKey: ['posts', 'search', searchParams],
+    queryKey: ['search', searchParams],
     queryFn: getSearch,
     staleTime: 60 * 1000, //fresh->stale로 가는 시간
     gcTime: 300 * 1000,
   })
-  if (isLoading) {
-    return (
-      <article className={'mt-[128px] min-h-screen'}>
-        <Spinner />
-      </article>
-    )
-  }
-  if (isError) {
-    return <div>애러발생</div>
-  }
+
   return (
-    <article className={'mt-[128px]'}>
-      {data.map((post: PostType, index: number) => (
-        <PostItem post={post} key={index} />
-      ))}
+    <article className={'mt-[140px]'}>
+      {isLoading && <Spinner />}
+      {isError && <Error />}
+      {/*{data.map((post: PostType, index: number) => (*/}
+      {/*  <PostItem post={post} key={index} />*/}
+      {/*))}*/}
     </article>
   )
 }

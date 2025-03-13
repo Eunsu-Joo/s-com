@@ -14,6 +14,6 @@ const useTextarea = (
         textareaRef.current?.scrollHeight + 'px'
     }
   }
-  return { contents, onChange }
+  return { contents, onChange, setContents }
 }
 export default useTextarea

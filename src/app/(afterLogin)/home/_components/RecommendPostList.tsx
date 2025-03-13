@@ -42,14 +42,14 @@ const RecommendPostList = () => {
   }
   return (
     <>
-      {data.pages.map((page, index) => (
-        <Fragment key={index}>
-          {page.map((post: PostType, index: number) => (
-            <PostItem post={post} key={index} />
-          ))}
-        </Fragment>
-      ))}
-      {!isFetching && <div className={'h-[40px]'} ref={ref} />}
+      {/*{data.pages.map((page, index) => (*/}
+      {/*  <Fragment key={index}>*/}
+      {/*    {page.map((post: PostType, index: number) => (*/}
+      {/*      <PostItem post={post} key={index} />*/}
+      {/*    ))}*/}
+      {/*  </Fragment>*/}
+      {/*))}*/}
+      {/*{!isFetching && <div className={'h-[40px]'} ref={ref} />}*/}
     </>
   )
 }

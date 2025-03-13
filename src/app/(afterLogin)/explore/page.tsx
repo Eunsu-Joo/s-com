@@ -15,7 +15,7 @@ export default async function ExplorePage() {
         <Searchbar />
       </div>
       <article className={'mt-[60px] border-t'}>
-        <ExploreSection session={session} />
+        {/*<ExploreSection session={session} />*/}
       </article>
     </section>
   )

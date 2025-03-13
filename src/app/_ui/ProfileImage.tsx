@@ -9,17 +9,10 @@ const ProfileImage = ({ src, alt, width = 40 }: ProfileImage) => {
   return (
     <div
       style={{ width: `${width}px`, height: `${width}px` }}
-      className={`relative overflow-hidden rounded-full`}
+      className={`relative overflow-hidden rounded-full shadow`}
     >
       {src ? (
-        <Image
-          sizes={`${width}px`}
-          fill
-          priority
-          className={'object-cover'}
-          src={src}
-          alt={alt ?? ''}
-        />
+        <img className={'object-cover'} src={src} alt={alt ?? ''} />
       ) : (
         <div className={'h-full w-full bg-gray_glow'} />
       )}

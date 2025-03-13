@@ -1,12 +1,13 @@
 'use client'
-import Image from 'next/image'
+
 import React, { useEffect, useRef, useState } from 'react'
-import Slider from 'react-slick'
+import Slider, { CustomArrowProps } from 'react-slick'
 import { CloseIcon, NextIcon, PrevIcon } from '@/app/_ui/Icons'
+import { PreviewImagesStateType } from '@/hooks/useImagePreviews'
 
 export type ImageSlidesType = {
-  images: string[]
-  deleteAction: (image: string) => void
+  images: PreviewImagesStateType
+  deleteAction: (file: File) => void
 }
 const PreviewImageSlides = ({ images, deleteAction }: ImageSlidesType) => {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -21,21 +22,21 @@ const PreviewImageSlides = ({ images, deleteAction }: ImageSlidesType) => {
     return (
       <div className={'relative h-full w-full overflow-hidden rounded-[16px]'}>
         <button
-          onClick={() => deleteAction(images[0])}
+          onClick={() => deleteAction(images[0].file)}
           className='absolute right-4 top-4 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-[17px] border-0 bg-gray_glow transition-all'
         >
           <CloseIcon />
         </button>
         <img
-          src={images[0]}
-          alt={images[0]}
+          src={images[0].dataURL}
+          alt={images[0].dataURL}
           className={'h-full w-full object-cover object-center'}
         />
       </div>
     )
   }
   // React-Slick Slider
-  const PrevButton = (props: any) => {
+  const PrevButton = (props: CustomArrowProps) => {
     const { className, style, onClick } = props
 
     return (
@@ -47,7 +48,7 @@ const PreviewImageSlides = ({ images, deleteAction }: ImageSlidesType) => {
       </div>
     )
   }
-  const NextButton = (props: any) => {
+  const NextButton = (props: CustomArrowProps) => {
     const { className, style, onClick } = props
     return (
       <div
@@ -81,13 +82,13 @@ const PreviewImageSlides = ({ images, deleteAction }: ImageSlidesType) => {
               key={index}
             >
               <img
-                src={image}
+                src={image.dataURL}
                 className={'h-[inherit] object-cover object-center'}
                 alt=''
               />
               <button
                 onClick={() => {
-                  deleteAction(image)
+                  deleteAction(image.file)
                 }}
                 className='absolute right-4 top-4 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-[17px] border-0 bg-gray_glow transition-all'
               >

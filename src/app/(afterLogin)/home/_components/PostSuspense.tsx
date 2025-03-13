@@ -6,6 +6,8 @@ import {
 import GetRecommendPosts from '@/app/(afterLogin)/_lib/getRecommendPosts'
 import PostList from '@/app/(afterLogin)/home/_components/PostList'
 import Spinner from '@/app/_components/Spinner'
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
+import Error from '@/app/_components/Error'
 
 const PostSuspense = async () => {
   const queryClient = new QueryClient()
@@ -18,7 +20,9 @@ const PostSuspense = async () => {
   const dehydratedState = dehydrate(queryClient)
   return (
     <HydrationBoundary state={dehydratedState}>
-      <PostList />
+      <ErrorBoundary errorComponent={Error}>
+        <PostList />
+      </ErrorBoundary>
     </HydrationBoundary>
   )
 }

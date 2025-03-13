@@ -19,6 +19,7 @@ export default async function AfterLoginLayout({
   modal: React.ReactNode
 }) {
   const session = await auth()
+
   return (
     <RQProvider>
       <div className='flex items-stretch'>

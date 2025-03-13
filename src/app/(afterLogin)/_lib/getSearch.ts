@@ -1,17 +1,16 @@
 import { SearchParamsType } from '@/app/(afterLogin)/search/page'
 
 type GetSearchProps = {
-  queryKey: any
+  queryKey: [string, any]
 }
 
 export default async function ({ queryKey }: GetSearchProps) {
-  const [, , searchParams] = queryKey
-
+  const [, searchParams] = queryKey
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/${searchParams.q}?${searchParams.toString()}`,
     {
       next: {
-        tags: ['posts', 'search', searchParams],
+        tags: ['search', searchParams],
       },
       cache: 'no-cache',
     }

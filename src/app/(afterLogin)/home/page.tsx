@@ -15,10 +15,8 @@ import { Suspense } from 'react'
 import PageLoading from '@/app/_components/PageLoading'
 
 export default async function MainPage() {
-  const session = await auth()
-
   // queryClient에 저장된 데이터를 직렬화하여 클라이언트에 전달하기 위해 필요함.
-
+  const session = await auth()
   return (
     <section className={'border-grey_light border'}>
       <TabContext>

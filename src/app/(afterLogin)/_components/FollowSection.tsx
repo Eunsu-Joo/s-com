@@ -15,7 +15,11 @@ const FollowSection = ({ session }: SessionType) => {
   })
   if (!session) return null
   if (isError) {
-    return <div>애러발생</div>
+    return (
+      <div className={'mt-3 rounded-2xl bg-gray_light p-4'}>
+        <p>애러 발생</p>
+      </div>
+    )
   }
   if (isLoading) {
     return (

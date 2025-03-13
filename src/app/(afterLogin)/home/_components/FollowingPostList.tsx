@@ -10,46 +10,48 @@ import { Fragment, useEffect } from 'react'
 import PostItem from '@/app/(afterLogin)/_components/PostItem'
 
 const FollowingPostList = () => {
-  const { data, isFetching, hasNextPage, fetchNextPage, isLoading, error } =
-    useSuspenseInfiniteQuery<
-      PostType[],
-      object,
-      InfiniteData<PostType[]>,
-      [string, string],
-      number
-    >({
-      queryKey: ['posts', 'following'],
-      queryFn: getFollowingPosts,
-      staleTime: 60 * 1000, //fresh->stale로 가는 시간
-      gcTime: 300 * 1000,
-      initialPageParam: 0,
-      getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
-    })
+  const {
+    data,
+    isError,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+    error,
+  } = useSuspenseInfiniteQuery<
+    PostType[],
+    object,
+    InfiniteData<PostType[]>,
+    [string, string],
+    number
+  >({
+    queryKey: ['posts', 'following'],
+    queryFn: getFollowingPosts,
+    staleTime: 60 * 1000, //fresh->stale로 가는 시간
+    gcTime: 300 * 1000,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      return lastPage ? lastPage.at(-1)?.postId : false
+    },
+  })
   const { ref, inView } = useInView()
 
   useEffect(() => {
     if (inView) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       hasNextPage && !isFetching && fetchNextPage()
     }
   }, [inView, isFetching, hasNextPage])
-
-  if (error) {
-    return <div>애러발생</div>
-  }
-  if (!data) {
-    return <div>데이터 없음.</div>
-  }
+  console.log(isLoading)
   return (
     <>
-      {data.pages.map((page, index) => (
-        <Fragment key={index}>
-          {page.map((post: PostType, index: number) => (
-            <PostItem post={post} key={index} />
-          ))}
-        </Fragment>
-      ))}
-      {!isFetching && <div className={'h-[40px]'} ref={ref} />}
+      {/*{data.pages.map((page, index) => (*/}
+      {/*  <Fragment key={index}>*/}
+      {/*    {page.map((post: PostType, index: number) => (*/}
+      {/*      <PostItem post={post} key={index} />*/}
+      {/*    ))}*/}
+      {/*  </Fragment>*/}
+      {/*))}*/}
+      {/*{!isFetching && <div className={'h-[40px]'} ref={ref} />}*/}
     </>
   )
 }
